@@ -20,10 +20,11 @@ public class DiggersGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		unit = new Unit("hero.jpg", 0, 300);
-		platforms.add(new Platform("water.jpg", 0, 10));
-//		platforms.add(new Platform("water.jpg", 300, 10));
-//		platforms.add(new Platform("water.jpg", 500, 50));
+		unit = new Unit("hero.png", 200, 300);
+		platforms.add(new Platform("water.jpg", 100, 100));
+		platforms.add(new Platform("water.jpg", 300, 50));
+		platforms.add(new Platform("water.jpg", 500, 200));
+		platforms.add(new Platform("water.jpg", 100, 450));
 	}
 
 	@Override

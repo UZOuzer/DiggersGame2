@@ -12,7 +12,8 @@ public class UnitPhysic {
 
     protected float dx = 0, dy = 0;
     protected float maxSpeed = 200; // max pixels per second
-    protected float maxJumpPower = 400; // max pixels per second
+    protected float maxJumpPower = 800; // max pixels per second
+    public boolean isOnAGround = false;
 
     public UnitPhysic(Unit unit){
         this.unit = unit;
@@ -43,7 +44,7 @@ public class UnitPhysic {
     }
 
     public void jump(){
-        dy = maxJumpPower;
+        if (isOnAGround) dy = maxJumpPower;
     }
 
     public void moveLeft(){
@@ -89,18 +90,40 @@ public class UnitPhysic {
         this.unit.setX(newX);
         this.unit.setY(newY);
 
+        isOnAGround = false;
+
         //Rectangle newRect = new Rectangle(newX, newY, getRect().width, getRect().height);
 
         float corY = 0;
         for (Platform platform: platforms){
-            boolean isDownClear = !platform.getRect().overlaps(getDownRect());
-            boolean isUpClear = !platform.getRect().overlaps(getUpRect());
-            boolean isLeftClear = !platform.getRect().overlaps(getLeftRect());
-            boolean isRightClear = !platform.getRect().overlaps(getRightRect());
-
-            if (!isDownClear){
-                newX = oldX;
-                newY = oldY;
+            if (platform.getRect().overlaps(getDownRect())){
+                float oldDistY = Math.abs(platform.getY() + platform.getRect().height - oldY);
+                if (oldDistY <= Math.abs(newY - oldY)){
+                    newY = platform.getY() + platform.getRect().height;
+                    isOnAGround = true;
+                }
+            }
+            //left
+            if (platform.getRect().overlaps(new Rectangle(newX, newY, unit.getRect().width, unit.getRect().height))){
+                float oldDistX = Math.abs(platform.getX() + platform.getRect().width - oldX);
+                if (oldDistX <= Math.abs(newX - oldX)){
+                    newX = platform.getX() + platform.getRect().width;
+                }
+            }
+            //right
+            if (platform.getRect().overlaps(new Rectangle(newX, newY, unit.getRect().width, unit.getRect().height))){
+                float oldDistX = Math.abs(platform.getX() - oldX - getRect().width);
+                if (oldDistX <= Math.abs(newX - oldX)){
+                    newX = platform.getX() - getRect().width;
+                }
+            }
+            //down
+            if (platform.getRect().overlaps(new Rectangle(newX, newY, unit.getRect().width, unit.getRect().height))){
+                float oldDistY = Math.abs(platform.getY() - oldY - getRect().height);
+                if (oldDistY <= Math.abs(newY - oldY)){
+                    newY = platform.getY() - getRect().height - (dy * deltaTime - oldDistY);
+                    dy = -(dy / 2);
+                }
             }
         }
 
