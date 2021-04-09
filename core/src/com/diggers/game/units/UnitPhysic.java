@@ -92,42 +92,39 @@ public class UnitPhysic {
 
         isOnAGround = false;
 
-        //Rectangle newRect = new Rectangle(newX, newY, getRect().width, getRect().height);
-
         float corY = 0;
         for (Platform platform: platforms){
-            if (platform.getRect().overlaps(getDownRect())){
+            if (platform.getRect().overlaps(getRect())){
                 float oldDistY = Math.abs(platform.getY() + platform.getRect().height - oldY);
-                if (oldDistY <= Math.abs(newY - oldY)){
-                    newY = platform.getY() + platform.getRect().height;
+                if (oldDistY <= Math.abs(deltaY)){
+                    unit.setY(platform.getY() + platform.getRect().height);
                     isOnAGround = true;
                 }
             }
             //left
-            if (platform.getRect().overlaps(new Rectangle(newX, newY, unit.getRect().width, unit.getRect().height))){
+            if (platform.getRect().overlaps(getLeftRect())){
                 float oldDistX = Math.abs(platform.getX() + platform.getRect().width - oldX);
-                if (oldDistX <= Math.abs(newX - oldX)){
-                    newX = platform.getX() + platform.getRect().width;
+                if (oldDistX <= Math.abs(deltaX)){
+                    unit.setX(platform.getX() + platform.getRect().width);
                 }
             }
             //right
-            if (platform.getRect().overlaps(new Rectangle(newX, newY, unit.getRect().width, unit.getRect().height))){
+            if (platform.getRect().overlaps(getRightRect())){
                 float oldDistX = Math.abs(platform.getX() - oldX - getRect().width);
-                if (oldDistX <= Math.abs(newX - oldX)){
-                    newX = platform.getX() - getRect().width;
+                if (oldDistX <= Math.abs(deltaX)){
+                    unit.setX(platform.getX() - getRect().width);
                 }
             }
             //down
-            if (platform.getRect().overlaps(new Rectangle(newX, newY, unit.getRect().width, unit.getRect().height))){
+            if (platform.getRect().overlaps(getUpRect())){
                 float oldDistY = Math.abs(platform.getY() - oldY - getRect().height);
-                if (oldDistY <= Math.abs(newY - oldY)){
-                    newY = platform.getY() - getRect().height - (dy * deltaTime - oldDistY);
-                    dy = -(dy / 2);
+                if (oldDistY <= Math.abs(deltaY)){
+                    unit.setY(platform.getY() - getRect().height - (deltaY - oldDistY));
+                    dy = -30;
                 }
             }
         }
 
-        unit.setX(newX);
-        unit.setY(newY);
+
     }
 }
