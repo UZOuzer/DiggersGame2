@@ -11,6 +11,8 @@ public class GameObject {
     Texture texture;
     Sprite frame;
 
+
+
     public GameObject(String textureName){
         this.frame = new Sprite(new Texture(textureName));
     }
@@ -33,7 +35,6 @@ public class GameObject {
 
     public void setY(float y){
         frame.setY(y);
-        System.out.println(y + " " + frame.getY());
     }
 
     public Rectangle getRect(){

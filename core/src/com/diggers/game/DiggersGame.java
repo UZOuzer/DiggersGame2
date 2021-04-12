@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.diggers.game.units.Platform;
 import com.diggers.game.units.Unit;
@@ -16,21 +18,36 @@ public class DiggersGame extends ApplicationAdapter {
 	Unit unit;
 	ArrayList<Platform> platforms = new ArrayList<>();
 
-	
+	Sprite stena;
+
+	int p = 0;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		unit = new Unit("hero.png", 200, 300);
-		platforms.add(new Platform("water.jpg", 100, 100));
-		platforms.add(new Platform("water.jpg", 300, 50));
-		platforms.add(new Platform("water.jpg", 500, 200));
-		platforms.add(new Platform("water.jpg", 100, 450));
+
+		stena = new Sprite(new Texture("stena.png"));
+		unit = new Unit("geroipravo.png", 200, 300);
+
+
+		for(int i = 0; i < 20; i++){
+			platforms.add(new Platform("platforma.png", p, 0));
+			p += 50;
+		}
+
+		//platforms.add(new Platform("platforma.png", 0, 0));
+
+		//platforms.add(new Platform("water.jpg", 300, 50));
+		//platforms.add(new Platform("water.jpg", 500, 200));
+		//platforms.add(new Platform("water.jpg", 100, 450));
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)){
 			unit.unitPhysic.jump();
@@ -40,7 +57,7 @@ public class DiggersGame extends ApplicationAdapter {
 			unit.unitPhysic.moveRight();
 		}else{
 			if (Gdx.input.isKeyPressed(Input.Keys.A)){
-				unit.unitPhysic.moveLeft();
+				unit.goLeft(Gdx.graphics.getDeltaTime());
 			}else{
 				unit.unitPhysic.noMove();
 			}
@@ -49,10 +66,23 @@ public class DiggersGame extends ApplicationAdapter {
 		unit.update(Gdx.graphics.getDeltaTime(), platforms);
 
 		batch.begin();
+
+		for (int i = 0; i < Gdx.graphics.getWidth() / stena.getWidth() + 1; i++){
+			for(int j = 0; j < Gdx.graphics.getHeight() / stena.getHeight() + 1; j++){
+				stena.setX(i * stena.getWidth());
+				stena.setY(j * stena.getHeight());
+				stena.draw(batch);
+			}
+		}
+
+
 		unit.draw(batch, Gdx.graphics.getDeltaTime());
+
+
 		for (Platform platform: platforms){
 			platform.draw(batch, Gdx.graphics.getDeltaTime());
 		}
+
 		batch.end();
 	}
 	
