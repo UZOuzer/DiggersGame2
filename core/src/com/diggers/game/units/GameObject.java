@@ -11,10 +11,9 @@ public class GameObject {
     Texture texture;
     Sprite frame;
 
-
-
     public GameObject(String textureName){
-        this.frame = new Sprite(new Texture(textureName));
+        this.texture = new Texture(textureName);
+        this.frame = new Sprite(this.texture);
     }
 
     public void draw(SpriteBatch spriteBatch, float deltaTime){

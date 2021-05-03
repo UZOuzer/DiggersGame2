@@ -17,50 +17,26 @@ import java.util.ArrayList;
 
 public class DiggersGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Unit unit;
+	//Unit unit;
 	ArrayList<Platform> platforms = new ArrayList<>();
 
-	AnimatedSprite h;
+	Unit bob11;
 
 	Sprite stena;
+	//Sprite play;
 
 	int p = 0;
-
-	class AnimatedSprite{
-		float FRAME_DURATION = 0.2f;
-
-		Texture texture;
-		Rectangle curFrameRect;
-		int frameWidth = 100;
-		int frameHeight = 100;
-		float curFrameTimer = 0;
-
-		public AnimatedSprite(Texture texture, Rectangle curFrameRect) {
-			this.texture = texture;
-			this.curFrameRect = curFrameRect;
-		}
-
-		void update(float deltaTime){
-			curFrameTimer += deltaTime;
-			if (curFrameTimer >= FRAME_DURATION){
-				curFrameRect = new Rectangle((curFrameRect.x + frameWidth) % (5 * frameWidth), curFrameRect.y, curFrameRect.width, curFrameRect.height);
-				curFrameTimer = 0;
-			}
-		}
-
-		void draw(SpriteBatch batch){
-			Sprite sprite = new Sprite(texture, (int) curFrameRect.x, (int) curFrameRect.y, (int) curFrameRect.width, (int) curFrameRect.height);
-			batch.draw(sprite, 0, 0);
-		}
-	}
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 
-		h = new AnimatedSprite(new Texture("g.png"), new Rectangle(0, 0, 80, 100));
+		bob11 = new Unit("bob11.png", 300, 300); // картинка для анимации
 		stena = new Sprite(new Texture("stena.png"));
-		unit = new Unit("geroipravo.png", 200, 300);
+
+		//play = new Sprite(new Texture("play.png"));
+
+		//unit = new Unit("bob11.png", 200, 300);
 
 
 		for(int i = 0; i < 20; i++){
@@ -83,39 +59,51 @@ public class DiggersGame extends ApplicationAdapter {
 
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)){
-			unit.unitPhysic.jump();
+			bob11.jump(Gdx.graphics.getDeltaTime());
 		}
 
+
+
 		if (Gdx.input.isKeyPressed(Input.Keys.D)){
-			unit.unitPhysic.moveRight();
+			bob11.goRight(Gdx.graphics.getDeltaTime());
 		}else{
 			if (Gdx.input.isKeyPressed(Input.Keys.A)){
-				unit.goLeft(Gdx.graphics.getDeltaTime());
+				bob11.goLeft(Gdx.graphics.getDeltaTime());
 			}else{
-				unit.unitPhysic.noMove();
+				if (Gdx.input.isKeyPressed(Input.Keys.S)){
+					bob11.sit(Gdx.graphics.getDeltaTime());
+				}else {
+					bob11.oMove(Gdx.graphics.getDeltaTime());
+				}
+
 			}
 		}
 
-		unit.update(Gdx.graphics.getDeltaTime(), platforms);
-		h.update(Gdx.graphics.getDeltaTime());
+		//unit.update(Gdx.graphics.getDeltaTime(), platforms);
+		bob11.update(Gdx.graphics.getDeltaTime(), platforms);
+
 		batch.begin();
-		h.draw(batch);
-
-//		for (int i = 0; i < Gdx.graphics.getWidth() / stena.getWidth() + 1; i++){
-//			for(int j = 0; j < Gdx.graphics.getHeight() / stena.getHeight() + 1; j++){
-//				stena.setX(i * stena.getWidth());
-//				stena.setY(j * stena.getHeight());
-//				stena.draw(batch);
-//			}
-//		}
+		//play.draw(batch);
 
 
-//		unit.draw(batch, Gdx.graphics.getDeltaTime());
-//
-//
-//		for (Platform platform: platforms){
-//			platform.draw(batch, Gdx.graphics.getDeltaTime());
-//		}
+
+		for (int i = 0; i < Gdx.graphics.getWidth() / stena.getWidth() + 1; i++){
+			for(int j = 0; j < Gdx.graphics.getHeight() / stena.getHeight() + 1; j++){
+				stena.setX(i * stena.getWidth());
+				stena.setY(j * stena.getHeight());
+				stena.draw(batch);
+			}
+		}
+
+
+		//unit.draw(batch, Gdx.graphics.getDeltaTime());
+
+
+		for (Platform platform: platforms){
+			platform.draw(batch, Gdx.graphics.getDeltaTime());
+		}
+
+		bob11.draw(batch);
 
 		batch.end();
 	}

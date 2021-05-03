@@ -5,15 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Unit extends GameObject{
     public UnitPhysic unitPhysic;
-    private float currentFrameTime = 0;
-    private int currentFrameNumberX = 0;
-    private int currentFrameNumberY = 0;
-    private float maxTimePerFrame = 0.5f;
-    private Sprite[][] frames;
+    private AnimatedSprite animatedSprite;
 
     public Unit(String textureName) {
         this(textureName, 0, 0);
@@ -21,35 +18,45 @@ public class Unit extends GameObject{
 
     public Unit(String textureName, float posX, float posY) {
         super(textureName);
+        this.animatedSprite = new AnimatedSprite(this.texture, new Rectangle(0, 500, 100, 100));
         this.setX(posX);
         this.setY(posY);
         this.unitPhysic = new UnitPhysic(this);
-        frames = new Sprite[2][2];
-//        for(int i = 0; i < frames.length; i++){
-//            for (int j = 0; j < frames[i].length; j++){
-//                Texture texture = new Texture(textureName);
-//                int w = texture.getWidth() / frames[i].length;
-//                int h = texture.getHeight() / frames.length;
-//                System.out.println(j * w + " " +  i * h + " " +  w + " " + h);
-//                frames[i][j] =
-//                        new Sprite(texture, j * w, i * h, w, h);
-//            }
-//        }
-        frame = new Sprite(new Texture(textureName), (int) frame.getX(), (int) frame.getY());
     }
 
     public void update(float deltaTime, ArrayList<Platform> platforms) {
         //super.update(deltaTime);
-        //unitPhysic.update(deltaTime, platforms);
-//        currentFrameTime += deltaTime;
-//        if (currentFrameTime >= maxTimePerFrame){
-//            currentFrameTime = 0;
-//            currentFrameNumberX = (currentFrameNumberX + 1) % frames[currentFrameNumberY].length;
-//            frame = frames[currentFrameNumberY][currentFrameNumberX];
-//        }
+        animatedSprite.update(deltaTime);
+        unitPhysic.update(deltaTime, platforms);
+        animatedSprite.posX = getX();
+        animatedSprite.posY = getY();
     }
     public void goLeft(float deltaTime){
+        animatedSprite.curFrameY = 3;
         unitPhysic.moveLeft();
-        currentFrameNumberY = 1;
+
+    }
+    public void draw(SpriteBatch batch){
+        animatedSprite.draw(batch);
+    }
+
+    public void jump(float deltaTime) {
+        animatedSprite.curFrameY = 0;
+        unitPhysic.jump();
+    }
+
+    public void goRight(float deltaTime) {
+        animatedSprite.curFrameY = 4;
+        unitPhysic.moveRight();
+
+    }
+
+    public void oMove(float deltaTime) {
+        animatedSprite.curFrameY = 0;
+        unitPhysic.noMove();
+    }
+
+    public void sit(float deltaTime) {
+        animatedSprite.curFrameY = 12;
     }
 }
