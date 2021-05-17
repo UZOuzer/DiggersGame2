@@ -55,9 +55,17 @@ public class UnitPhysic {
         dx = maxSpeed;
     }
 
+    public void rightAim() {
+
+    }
+    public void leftAim() {
+
+    }
+
     public void noMove(){
         dx = 0;
     }
+
 
 
 

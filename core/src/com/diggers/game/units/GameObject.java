@@ -28,6 +28,10 @@ public class GameObject {
         return frame.getY();
     }
 
+    public float getHeight(){
+        return getRect().height;
+    }
+
     public void setX(float x){
         frame.setX(x);
     }

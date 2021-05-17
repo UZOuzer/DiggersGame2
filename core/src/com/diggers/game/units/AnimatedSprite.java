@@ -39,17 +39,17 @@ public 	class AnimatedSprite{
         }
         // 1 - стрельба влево
         frames.add(new ArrayList<Rectangle>());
-        for (int i = 0; i < 6; i++){
+        for (int i = 3; i < 5; i++){
             frames.get(1).add(new Rectangle(i * frameWidth, frameHeight, frameWidth, frameHeight));
         }
         // 2 - стрельба вправо
         frames.add(new ArrayList<Rectangle>());
-        for (int i = 0; i < 5; i++){
+        for (int i = 3; i < 5; i++){
             frames.get(2).add(new Rectangle(i * frameWidth, frameHeight * 2, frameWidth, frameHeight));
         }
         // 3 - бег влево
         frames.add(new ArrayList<Rectangle>());
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 10; i++){
             frames.get(3).add(new Rectangle(i * frameWidth, frameHeight * 3, frameWidth, frameHeight));
         }
         // 4 - бег вправо
@@ -94,7 +94,7 @@ public 	class AnimatedSprite{
         }
         // 12 - сидя влево
         frames.add(new ArrayList<Rectangle>());
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < 1; i++){
             frames.get(12).add(new Rectangle(i * frameWidth, frameHeight * 12, frameWidth, frameHeight));
         }
 

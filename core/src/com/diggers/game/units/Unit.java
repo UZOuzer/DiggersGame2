@@ -51,6 +51,16 @@ public class Unit extends GameObject{
 
     }
 
+    public void rightAim(float deltaTime){
+        animatedSprite.curFrameY = 2;
+        //unitPhysic.rightAim();
+    }
+    public void leftAim(float deltaTime){
+        animatedSprite.curFrameY = 1;
+        //unitPhysic.rightAim();
+    }
+
+
     public void oMove(float deltaTime) {
         animatedSprite.curFrameY = 0;
         unitPhysic.noMove();
